@@ -7,8 +7,8 @@ cd /tmp/rom
 SYNC_START=$(date +"%s")
 
 
-git config --global user.name "TheSanty"
-git config --global user.email "sudhiryadav.igi@gmail.com"
+git config --global user.name "YadavMohit19"
+git config --global user.email "mohityadav050575@gmail.com"
 
 
 # Git cookies
@@ -26,10 +26,10 @@ ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 # Rom repo sync & dt ( Add roms and update case functions )
 rom_one(){
-     repo init --depth=1 --no-repo-verify -u https://github.com/HyconOS/manifest -b eleven -g default,-device,-mips,-darwin,-notdefault
-     git clone https://github.com/TheSanty/local_manifests.git -b $rom .repo/local_manifests
+     repo init --depth=1 --no-repo-verify -u https://github.com/CherishOS/android_manifest -b eleven -g default,-device,-mips,-darwin,-notdefault
+     git clone https://github.com/YadavMohit19/local_manifests.git -b $rom .repo/local_manifests
 	 repo sync -c --no-clone-bundle --no-tags --optimized-fetch --force-sync -j$(nproc --all)
-     . build/envsetup.sh && lunch aosp_whyred-user
+     . build/envsetup.sh && lunch cherish_sakura-userdebug
 }
 
 rom_two(){
@@ -59,7 +59,7 @@ telegram_build() {
 
 # Branch name & Head commit sha for ease of tracking
 commit_sha() {
-    for repo in device/xiaomi/${T_DEVICE} device/xiaomi/sdm660-common vendor/xiaomi kernel/xiaomi/sdm660
+    for repo in device/xiaomi/${T_DEVICE}  vendor/xiaomi kernel/xiaomi/msm8953
     do
 	printf "[$(echo $repo | cut -d'/' -f1 )/$(git -C ./$repo/.git rev-parse --short=10 HEAD)]"
     done
@@ -68,7 +68,7 @@ commit_sha() {
 
 # Function to be chose based on rom flag in .yml
 case "${rom}" in
- "HyconOS") rom_one
+ "CherishOS") rom_one
     ;;
  "CorvusOS") rom_two
     ;;
@@ -107,9 +107,9 @@ ccache -z
 
 # Build commands for each roms on basis of rom flag in .yml / an additional full build.log is kept.
 case "${rom}" in
- "HyconOS") mka bacon -j18 2>&1 | tee build.log
+ "HyconOS") mka bacon 2>&1 | tee build.log
     ;;
- "CorvusOS") make corvus -j18 2>&1 | tee build.log
+ "CorvusOS") make corvus 2>&1 | tee build.log
     ;;
  *) echo "Invalid option!"
     exit 1
